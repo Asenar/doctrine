@@ -2,7 +2,7 @@
 
 namespace Kohana\Doctrine\Caching;
 
-use Exception;
+use Kohana\Doctrine\Exception\CacheNotInstalledException;
 use Kohana\Doctrine\Exception\IncorrectConfigurationException;
 use Redis;
 
@@ -40,12 +40,12 @@ class RedisCache implements CacheInterface
      * @param int $redisPort
      * @param float $redisTimeout
      * @return Redis
-     * @throws Exception
+     * @throws CacheNotInstalledException
      */
     private function configureRedis($redisHost, $redisPort, $redisTimeout)
     {
         if (!class_exists("Redis")) {
-            throw new Exception("Redis cache is not available");
+            throw new CacheNotInstalledException("Redis");
         }
 
         $redis = new Redis;
