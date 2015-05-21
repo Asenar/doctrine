@@ -7,36 +7,37 @@ use Kohana;
 
 class EventManager
 {
-    public function instance($settings = null)
+    /**
+     * @var Configuration
+     */
+    private $configuration;
+
+    /**
+     * @var DoctrineEventManager
+     */
+    private $eventManager;
+
+    public function __construct()
     {
-        if(is_null($settings)) {
-            $settings = $this->getSettings();
-        }
-
-        $eventManager = new DoctrineEventManager;
-
-        $eventsConfig = $settings['events'];
-
-        foreach($eventsConfig['listeners'] AS $listener => $events) {
-            $eventManager->addEventListener((array) $events, new $listener());
-        }
-
-        foreach($eventsConfig['subscribers'] AS $subscriber) {
-            $eventManager->addEventSubscriber(new $subscriber());
-        }
-
-        return $eventManager;
+        $this->configuration = new Configuration;
+        $this->eventManager = new DoctrineEventManager;
     }
 
     /**
-     * Get settings from configuration file
-     *
-     * @static
-     * @access private
-     * @return object
+     * @return DoctrineEventManager
      */
-    private function getSettings()
+    public function configureEventManager()
     {
-        return Kohana::$config->load('doctrine');
+        $eventConfiguration = $this->configuration->get('event');
+
+        foreach($eventConfiguration['listeners'] AS $listener => $events) {
+            $this->eventManager->addEventListener((array) $events, new $listener());
+        }
+
+        foreach($eventConfiguration['subscribers'] AS $subscriber) {
+            $this->eventManager->addEventSubscriber(new $subscriber());
+        }
+
+        return $this->eventManager;
     }
 } 

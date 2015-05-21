@@ -2,7 +2,7 @@
 
 namespace Kohana\Doctrine;
 
-use Kohana_Config;
+use Kohana\Doctrine\Caching\CacheInterface;
 
 /**
  * Class Cache
@@ -11,23 +11,29 @@ use Kohana_Config;
 class Cache
 {
     /**
-     * @var Kohana_Config
+     * @var Configuration
      */
-    private $kohanaConfig;
+    private $configuration;
 
-    public function __construct(Kohana_Config $kohanaConfig)
+    /**
+     * @param Configuration $configuration
+     */
+    public function __construct(Configuration $configuration)
     {
-        $this->kohanaConfig = $kohanaConfig;
+        $this->configuration = $configuration;
     }
 
     /**
-     * @param string $cacheName
+     * @return \Doctrine\Common\Cache\CacheProvider
      */
-    public function configureCache($cacheName)
+    public function configureCache()
     {
-        $cacheConfig = $this->kohanaConfig->load('doctrine')->get('cache');
-        $cacheClass = '\Kohana\Doctrine\Caching\\'. ucfirst($cacheName) . 'Cache';
+        $cacheConfig = $this->configuration->get('cache');
+        $cacheClassName = '\Kohana\Doctrine\Caching\\'. ucfirst($cacheConfig['type']) . 'Cache';
 
-        return new $cacheClass($cacheConfig);
+        /** @var CacheInterface $cacheClass */
+        $cacheClass = new $cacheClassName();
+
+        return $cacheClass->configureCache($cacheConfig);
     }
 }

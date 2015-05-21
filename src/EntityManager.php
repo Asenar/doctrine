@@ -2,67 +2,63 @@
 
 namespace Kohana\Doctrine;
 
+use Doctrine\ORM\EntityManager as DoctrineEntityManager;
+use Kohana;
+
 /**
  * Provide access to a Doctrine2 EntityManager
  */
 class EntityManager
 {
     /**
-     * @staticvar EntityManager must be a singleton. This attribute will be set if the EntityManager is created
+     * @static DoctrineEntityManager This attribute will be set if the EntityManager is created
      */
-    private static $instance = null;
+    private static $entityManagerInstance = null;
+
+    /**
+     * @var Configuration
+     */
+    private $configuration;
+
+    /**
+     * @var Configurator
+     */
+    private $configurator;
+
+    public function __construct()
+    {
+        $this->configuration = new Configuration;
+        $this->configurator = new Configurator;
+        $this->eventManager = new EventManager;
+    }
+
+    /**
+     * @return EntityManager
+     */
+    public static function instance()
+    {
+        if (is_null(self::$entityManagerInstance)) {
+             $entityManager = new self;
+
+            self::$entityManagerInstance = $entityManager->create();
+        }
+
+        return self::$entityManagerInstance;
+    }
 
     /**
      * Get an instance of the \Doctrine\ORM\EntityManager
      *
      * The EntityManager is build based on the database.php config file
      *
-     * @static
-     * @access public
      * @return \Doctrine\ORM\EntityManager
      */
-    public static function instance()
+    public function create()
     {
-        if (is_null(self::$instance)) {
-            // Get credentials for connection
-            $Config = Config::instance();
-
-            // Get credentials
-            $credentials = self::getConnectionCredentials();
-
-            // Get Eventmanager
-            $EventManager = Doctrine_Eventmanager::instance();
-
-            // Create entitymanager
-            $entityManager		= \Doctrine\ORM\EntityManager::create($credentials, $Config, $EventManager);
-
-            // Set the entityManager
-            self::$instance = $entityManager;
-        }
-        // Return the entity manager
-        return self::$instance;
-    }
-
-    /**
-     * Get the configuration for the entitymanager
-     *
-     * @static
-     * @access private
-     * @return array
-     */
-    private static function getSettings() {
-        return Kohana::$config->load('doctrine');
-    }
-
-    /**
-     * Get connection credentials to the database
-     *
-     * @static
-     * @access private
-     * @uses self::getSettings()
-     * @return array
-     */
-    private static function getConnectionCredentials() {
-        return $credentials = self::getSettings()->credentials;
+        return DoctrineEntityManager::create(
+            $this->configuration->get('credentials'),
+            $this->configurator->configureDoctrine(),
+            $this->eventManager->configureEventManager()
+        );
     }
 }

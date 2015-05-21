@@ -33,7 +33,7 @@ return [
     /** Define namespaces */
     "namespaces" => [],
     /** Set production flag */
-    "production" => false,
+    "onProduction" => false,
     /** Set events */
     "events" => [
         "listeners" => [
