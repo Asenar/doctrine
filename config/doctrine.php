@@ -18,7 +18,7 @@ return [
             realpath(APPPATH.DIRECTORY_SEPARATOR.'classes'.DIRECTORY_SEPARATOR.'models'.DIRECTORY_SEPARATOR."xml"),
         ],
     ],
-    /** Cache settings. Only arraycache is implemented right now */
+    /** Cache settings */
     "cache" => [
         "type" => "array",
         // "host" => "hostname",

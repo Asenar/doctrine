@@ -46,24 +46,24 @@ class Configurator
     public function configureDoctrine()
     {
         $configuredCache = $this->cache->configureCache();
-        $configuredMapping = $this->mapping->configureDriver($configuredCache);
+        $configuredDriver = $this->mapping->configureDriver($configuredCache);
 
         foreach ($this->configuration->get('namespaces') as $namespace => $path) {
-            $this->driverChain->addDriver($configuredMapping->getMetadataDriverImpl(), $namespace);
+            $this->driverChain->addDriver($configuredDriver->getMetadataDriverImpl(), $namespace);
         }
 
-        $configuredMapping->setMetadataDriverImpl($this->driverChain);
+        $configuredDriver->setMetadataDriverImpl($this->driverChain);
 
         // Implement maximum caching
-        $configuredMapping->setMetadataCacheImpl($configuredCache);
-        $configuredMapping->setHydrationCacheImpl($configuredCache);
-        $configuredMapping->setQueryCacheImpl($configuredCache);
-        $configuredMapping->setResultCacheImpl($configuredCache);
+        $configuredDriver->setMetadataCacheImpl($configuredCache);
+        $configuredDriver->setHydrationCacheImpl($configuredCache);
+        $configuredDriver->setQueryCacheImpl($configuredCache);
+        $configuredDriver->setResultCacheImpl($configuredCache);
 
         // Set proxies and proxie-prefix
-        $configuredMapping->setProxyNamespace($this->configuration->get('proxy.namespace'));
-        $configuredMapping->setAutoGenerateProxyClasses($this->configuration->get('proxy.generate'));
+        $configuredDriver->setProxyNamespace($this->configuration->get('proxy.namespace'));
+        $configuredDriver->setAutoGenerateProxyClasses($this->configuration->get('proxy.generate'));
 
-        return $configuredMapping;
+        return $configuredDriver;
     }
 }
