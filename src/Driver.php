@@ -2,8 +2,8 @@
 
 namespace Kohana\Doctrine;
 
-use Doctrine\Common\Cache\Cache;
 use Kohana\Doctrine\Driver\DriverInterface;
+use Kohana\Doctrine\Exception\IncorrectConfigurationException;
 
 /**
  * Class Driver
@@ -27,12 +27,21 @@ class Driver
     /**
      * @param Cache $cache
      * @return \Doctrine\ORM\Configuration
+     * @throws IncorrectConfigurationException
      */
-    public function configureDriver(Cache $cache)
+    public function configureDriver(Cache $cache = null)
     {
         $mappingConfig = $this->configuration->get('mapping');
         $proxyConfig = $this->configuration->get('proxy');
         $onProduction = $this->configuration->get('onProduction');
+
+        if (empty($mappingConfig['path'])) {
+            throw new IncorrectConfigurationException('mapping.path');
+        }
+
+        if (empty($proxyConfig['path'])) {
+            throw new IncorrectConfigurationException('proxy.path');
+        }
 
         $driverClassName = '\Kohana\Doctrine\Driver\\'. ucfirst($mappingConfig['type']) . 'Driver';
 

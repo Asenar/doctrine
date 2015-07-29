@@ -14,18 +14,9 @@ class XmlDriver implements DriverInterface
      * @param bool $onProduction
      * @param Cache $cache
      * @return \Doctrine\ORM\Configuration
-     * @throws IncorrectConfigurationException
      */
     public function configureDriver(array $mappingConfig, array $proxyConfig, $onProduction = true, Cache $cache = null)
     {
-        if (empty($mappingConfig['path'])) {
-            throw new IncorrectConfigurationException('mapping.path');
-        }
-
-        if (empty($proxyConfig['path'])) {
-            throw new IncorrectConfigurationException('proxy.path');
-        }
-
         return Setup::createXMLMetadataConfiguration(
             $mappingConfig['path'],
             $onProduction,
