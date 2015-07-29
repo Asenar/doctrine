@@ -2,6 +2,7 @@
 
 namespace Kohana\Doctrine\Caching;
 
+use Kohana\Doctrine\Exception\CacheNotInstalledException;
 use Kohana\Doctrine\Exception\IncorrectConfigurationException;
 use Memcache;
 
@@ -26,7 +27,7 @@ class MemcacheCache implements CacheInterface
             $cacheConfig['timeout'] = 1;
         }
 
-        $memcache = $this->configureMemcache($cacheConfig['host'], $cacheConfig['post'], $cacheConfig['timeout']);
+        $memcache = $this->configureMemcache($cacheConfig['host'], $cacheConfig['port'], $cacheConfig['timeout']);
 
         $cacheDriver = new \Doctrine\Common\Cache\MemcacheCache();
         $cacheDriver->setMemcache($memcache);
@@ -39,9 +40,14 @@ class MemcacheCache implements CacheInterface
      * @param int $memcachePort
      * @param int $memcacheTimeout
      * @return Memcache
+     * @throws CacheNotInstalledException
      */
     private function configureMemcache($memcacheHost, $memcachePort, $memcacheTimeout)
     {
+        if (!class_exists("Memcache")) {
+            throw new CacheNotInstalledException("Memcache");
+        }
+
         $memcache = new Memcache;
         $memcache->connect($memcacheHost, $memcachePort, $memcacheTimeout);
 
