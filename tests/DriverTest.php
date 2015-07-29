@@ -34,7 +34,8 @@ class DriverTest extends \PHPUnit_Framework_TestCase
             ->with('mapping')
             ->andReturn([
                 'type' => 'annotation',
-                'path' => []
+                'path' => [],
+                "namingStrategy" => ["strategy" => "default"]
             ]);
 
         $this->configuration->shouldReceive('get')
@@ -61,7 +62,8 @@ class DriverTest extends \PHPUnit_Framework_TestCase
                 'type' => 'annotation',
                 'path' => [
                     'path/to/mapping/files'
-                ]
+                ],
+                "namingStrategy" => ["strategy" => "default"]
             ]);
 
         $this->configuration->shouldReceive('get')
@@ -86,7 +88,8 @@ class DriverTest extends \PHPUnit_Framework_TestCase
                 'type' => 'annotation',
                 'path' => [
                     'path/to/mapping/files'
-                ]
+                ],
+                "namingStrategy" => ["strategy" => "default"]
             ]);
 
         $this->configuration->shouldReceive('get')
@@ -115,7 +118,8 @@ class DriverTest extends \PHPUnit_Framework_TestCase
                 'type' => 'xml',
                 'path' => [
                     'path/to/mapping/files'
-                ]
+                ],
+                "namingStrategy" => ["strategy" => "default"]
             ]);
 
         $this->configuration->shouldReceive('get')
@@ -147,7 +151,8 @@ class DriverTest extends \PHPUnit_Framework_TestCase
                 'type' => 'yaml',
                 'path' => [
                     'path/to/mapping/files'
-                ]
+                ],
+                "namingStrategy" => ["strategy" => "default"]
             ]);
 
         $this->configuration->shouldReceive('get')
@@ -166,5 +171,42 @@ class DriverTest extends \PHPUnit_Framework_TestCase
             'Doctrine\Common\Persistence\Mapping\Driver\DefaultFileLocator',
             $metadataDriver->getLocator()
         );
+    }
+
+    /**
+     * @test
+     */
+    public function shouldBeAbleTaChangeNamingStrategy()
+    {
+        $this->configuration->shouldReceive('get')
+            ->with('mapping')
+            ->andReturn([
+                'type' => 'yaml',
+                'path' => [
+                    'path/to/mapping/files'
+                ],
+                "namingStrategy" => ["strategy" => "underscore", "case" => CASE_UPPER]
+            ]);
+
+        $this->configuration->shouldReceive('get')
+            ->with('proxy')
+            ->andReturn(['path' => 'path/to/proxy/files']);
+
+        $this->configuration->shouldReceive('get')
+            ->with('onProduction')
+            ->andReturn(true);
+
+        $configuredDriver = $this->driver->configureDriver();
+
+        $this->assertInstanceOf(
+            'Doctrine\ORM\Mapping\UnderscoreNamingStrategy',
+            $configuredDriver->getNamingStrategy()
+        );
+
+        $this->assertEquals(
+            CASE_UPPER,
+            $configuredDriver->getNamingStrategy()->getCase()
+        );
+
     }
 }

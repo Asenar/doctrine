@@ -2,6 +2,8 @@
 
 namespace Kohana\Doctrine;
 
+use Doctrine\ORM\Mapping\DefaultNamingStrategy;
+use Doctrine\ORM\Mapping\UnderscoreNamingStrategy;
 use Kohana\Doctrine\Driver\DriverInterface;
 use Kohana\Doctrine\Exception\IncorrectConfigurationException;
 
@@ -43,11 +45,33 @@ class Driver
             throw new IncorrectConfigurationException('proxy.path');
         }
 
+        $namingStrategy = $this->getNamingStrategy($mappingConfig['namingStrategy']);
+
         $driverClassName = '\Kohana\Doctrine\Driver\\'. ucfirst($mappingConfig['type']) . 'Driver';
 
         /** @var DriverInterface $driverClass */
         $driverClass = new $driverClassName();
+        $configuredDriver = $driverClass->configureDriver($mappingConfig, $proxyConfig, $onProduction, $cache);
+        $configuredDriver->setNamingStrategy($namingStrategy);
 
-        return $driverClass->configureDriver($mappingConfig, $proxyConfig, $onProduction, $cache);
+        return $configuredDriver;
+    }
+
+    /**
+     * @param array $namingStrategy
+     * @return \Doctrine\ORM\Mapping\NamingStrategy
+     * @throws IncorrectConfigurationException
+     */
+    private function getNamingStrategy(array $namingStrategy)
+    {
+        if (empty($namingStrategy['strategy'])) {
+            throw new IncorrectConfigurationException('mapping.namingStrategy.strategy');
+        }
+
+        if ($namingStrategy['strategy'] === 'underscore') {
+            return new UnderscoreNamingStrategy($namingStrategy['case']);
+        }
+
+        return new DefaultNamingStrategy;
     }
 }

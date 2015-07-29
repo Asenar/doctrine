@@ -17,6 +17,10 @@ return [
         "path" => [
             realpath(APPPATH.DIRECTORY_SEPARATOR.'classes'.DIRECTORY_SEPARATOR.'models'.DIRECTORY_SEPARATOR."xml"),
         ],
+        "namingStrategy" => [
+            "strategy" => "default",
+            "case" => CASE_LOWER
+        ],
     ],
     /** Cache settings */
     "cache" => [
