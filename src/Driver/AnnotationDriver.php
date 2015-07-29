@@ -21,7 +21,8 @@ class AnnotationDriver implements DriverInterface
             $mappingConfig['path'],
             $onProduction,
             $proxyConfig['path'],
-            $cache
+            $cache,
+            $mappingConfig['useSimpleAnnotationReader']
         );
     }
 }

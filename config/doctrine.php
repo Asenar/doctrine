@@ -21,6 +21,7 @@ return [
             "strategy" => "default",
             "case" => CASE_LOWER
         ],
+        'useSimpleAnnotationReader' => true,
     ],
     /** Cache settings */
     "cache" => [

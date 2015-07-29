@@ -89,7 +89,8 @@ class DriverTest extends \PHPUnit_Framework_TestCase
                 'path' => [
                     'path/to/mapping/files'
                 ],
-                "namingStrategy" => ["strategy" => "default"]
+                "namingStrategy" => ["strategy" => "default"],
+                'useSimpleAnnotationReader' => true
             ]);
 
         $this->configuration->shouldReceive('get')
