@@ -30,11 +30,11 @@ class EventManager
     {
         $eventConfiguration = $this->configuration->get('event');
 
-        foreach($eventConfiguration['listeners'] AS $listener => $events) {
+        foreach ($eventConfiguration['listeners'] as $listener => $events) {
             $this->eventManager->addEventListener((array) $events, new $listener());
         }
 
-        foreach($eventConfiguration['subscribers'] AS $subscriber) {
+        foreach ($eventConfiguration['subscribers'] as $subscriber) {
             $this->eventManager->addEventSubscriber(new $subscriber());
         }
 
