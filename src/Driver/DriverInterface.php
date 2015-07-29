@@ -13,5 +13,5 @@ interface DriverInterface
      * @param Cache $cache
      * @return \Doctrine\ORM\Configuration
      */
-    public function configureDriver(array $mappingConfig, array $proxyConfig, $onProduction = true, Cache $cache);
+    public function configureDriver(array $mappingConfig, array $proxyConfig, $onProduction, Cache $cache = null);
 }

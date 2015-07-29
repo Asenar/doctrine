@@ -16,7 +16,7 @@ class AnnotationDriver implements DriverInterface
      * @return \Doctrine\ORM\Configuration
      * @throws IncorrectConfigurationException
      */
-    public function configureDriver(array $mappingConfig, array $proxyConfig, $onProduction = true, Cache $cache)
+    public function configureDriver(array $mappingConfig, array $proxyConfig, $onProduction = true, Cache $cache = null)
     {
         if (empty($mappingConfig['path'])) {
             throw new IncorrectConfigurationException('mapping.path');
