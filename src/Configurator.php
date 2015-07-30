@@ -24,17 +24,18 @@ class Configurator
      * @var Driver
      */
     private $mapping;
+
     /**
      * @var MappingDriverChain
      */
     private $driverChain;
 
-    public function __construct()
+    public function __construct(Configuration $configuration, Cache $cache, Driver $driver, MappingDriverChain $mappingDriverChain)
     {
-        $this->configuration = new Configuration;
-        $this->cache = new Cache($this->configuration);
-        $this->mapping = new Driver($this->configuration);
-        $this->driverChain = new MappingDriverChain;
+        $this->configuration = $configuration;
+        $this->cache = $cache;
+        $this->mapping = $driver;
+        $this->driverChain = $mappingDriverChain;
     }
 
     /**

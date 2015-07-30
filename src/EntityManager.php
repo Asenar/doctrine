@@ -2,6 +2,7 @@
 
 namespace Kohana\Doctrine;
 
+use Doctrine\Common\Persistence\Mapping\Driver\MappingDriverChain;
 use Doctrine\ORM\EntityManager as DoctrineEntityManager;
 use Kohana;
 
@@ -25,10 +26,20 @@ class EntityManager
      */
     private $configurator;
 
+    /**
+     * @var EventManager
+     */
+    private $eventManager;
+
     public function __construct()
     {
-        $this->configuration = new Configuration;
-        $this->configurator = new Configurator;
+        $configuration = new Configuration;
+        $cache = new Cache($configuration);
+        $mapping = new Driver($configuration);
+        $driverChain = new MappingDriverChain;
+
+        $this->configuration = $configuration;
+        $this->configurator = new Configurator($configuration, $cache, $mapping, $driverChain);
         $this->eventManager = new EventManager;
     }
 
