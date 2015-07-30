@@ -30,8 +30,18 @@ class Configurator
      */
     private $driverChain;
 
-    public function __construct(Configuration $configuration, Cache $cache, Driver $driver, MappingDriverChain $mappingDriverChain)
-    {
+    /**
+     * @param Configuration $configuration
+     * @param Cache $cache
+     * @param Driver $driver
+     * @param MappingDriverChain $mappingDriverChain
+     */
+    public function __construct(
+        Configuration $configuration,
+        Cache $cache,
+        Driver $driver,
+        MappingDriverChain $mappingDriverChain
+    ) {
         $this->configuration = $configuration;
         $this->cache = $cache;
         $this->mapping = $driver;

@@ -3,7 +3,6 @@
 namespace Kohana\Doctrine;
 
 use Doctrine\Common\EventManager as DoctrineEventManager;
-use Kohana;
 
 class EventManager
 {
@@ -17,10 +16,14 @@ class EventManager
      */
     private $eventManager;
 
-    public function __construct()
+    /**
+     * @param Configuration $configuration
+     * @param DoctrineEventManager $eventManager
+     */
+    public function __construct(Configuration $configuration, DoctrineEventManager $eventManager)
     {
-        $this->configuration = new Configuration;
-        $this->eventManager = new DoctrineEventManager;
+        $this->configuration = $configuration;
+        $this->eventManager = $eventManager;
     }
 
     /**
