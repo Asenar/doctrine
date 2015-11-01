@@ -31,7 +31,7 @@ class EventManager
      */
     public function configureEventManager()
     {
-        $eventConfiguration = $this->configuration->get('event');
+        $eventConfiguration = $this->configuration->get('events');
 
         foreach ($eventConfiguration['listeners'] as $listener => $events) {
             $this->eventManager->addEventListener((array) $events, new $listener());
