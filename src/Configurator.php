@@ -71,9 +71,11 @@ class Configurator
         $configuredDriver->setQueryCacheImpl($configuredCache);
         $configuredDriver->setResultCacheImpl($configuredCache);
 
+        $proxyConfiguration = $this->configuration->get('proxy');
+
         // Set proxies and proxie-prefix
-        $configuredDriver->setProxyNamespace($this->configuration->get('proxy.namespace'));
-        $configuredDriver->setAutoGenerateProxyClasses($this->configuration->get('proxy.generate'));
+        $configuredDriver->setProxyNamespace($proxyConfiguration['namespace']);
+        $configuredDriver->setAutoGenerateProxyClasses($proxyConfiguration['generate']);
 
         return $configuredDriver;
     }
