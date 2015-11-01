@@ -42,10 +42,10 @@ return [
     /** Set events */
     "events" => [
         "listeners" => [
-            "class" => [], // Formated like "ClassnameOfListener" => "arrayWithEvents"
+            //"class" => [], // Formated like "ClassnameOfListener" => "arrayWithEvents"
         ],
         "subscribers" => [
-            "class" // EventSubscriberClass
+            //"class" // EventSubscriberClass
         ],
     ],
 ];
