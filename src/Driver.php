@@ -2,6 +2,7 @@
 
 namespace Kohana\Doctrine;
 
+use Doctrine\Common\Cache\Cache;
 use Doctrine\ORM\Mapping\DefaultNamingStrategy;
 use Doctrine\ORM\Mapping\UnderscoreNamingStrategy;
 use Kohana\Doctrine\Driver\DriverInterface;
