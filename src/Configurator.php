@@ -59,7 +59,7 @@ class Configurator
         $configuredCache = $this->cache->configureCache();
         $configuredDriver = $this->mapping->configureDriver($configuredCache);
 
-        foreach ($this->configuration->get('namespaces') as $namespace => $path) {
+        foreach ($this->configuration->get('namespaces') as $namespace) {
             $this->driverChain->addDriver($configuredDriver->getMetadataDriverImpl(), $namespace);
         }
 
