@@ -43,7 +43,7 @@ class EntityManager
     }
 
     /**
-     * @return EntityManager
+     * @return \Doctrine\ORM\EntityManager
      */
     public static function instance()
     {
