@@ -2,7 +2,7 @@
     "name": "rjd22/kohana-doctrine",
     "description": "Kohana module for integrating doctrine into kohana",
     "require": {
-        "doctrine/orm": "~2.4",
+        "doctrine/orm": "~2.5",
         "kohana/core": "~3.3",
         "php": ">=5.4"
     },
