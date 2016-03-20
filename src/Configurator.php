@@ -24,17 +24,28 @@ class Configurator
      * @var Driver
      */
     private $mapping;
+
     /**
      * @var MappingDriverChain
      */
     private $driverChain;
 
-    public function __construct(Configuration $configuration)
-    {
+    /**
+     * @param Configuration $configuration
+     * @param Cache $cache
+     * @param Driver $driver
+     * @param MappingDriverChain $mappingDriverChain
+     */
+    public function __construct(
+        Configuration $configuration,
+        Cache $cache,
+        Driver $driver,
+        MappingDriverChain $mappingDriverChain
+    ) {
         $this->configuration = $configuration;
-        $this->cache = new Cache($configuration);
-        $this->mapping = new Driver($configuration);
-        $this->driverChain = new MappingDriverChain;
+        $this->cache = $cache;
+        $this->mapping = $driver;
+        $this->driverChain = $mappingDriverChain;
     }
 
     /**
@@ -48,7 +59,7 @@ class Configurator
         $configuredCache = $this->cache->configureCache();
         $configuredDriver = $this->mapping->configureDriver($configuredCache);
 
-        foreach ($this->configuration->get('namespaces') as $namespace => $path) {
+        foreach ($this->configuration->get('namespaces') as $namespace) {
             $this->driverChain->addDriver($configuredDriver->getMetadataDriverImpl(), $namespace);
         }
 
@@ -60,9 +71,11 @@ class Configurator
         $configuredDriver->setQueryCacheImpl($configuredCache);
         $configuredDriver->setResultCacheImpl($configuredCache);
 
+        $proxyConfiguration = $this->configuration->get('proxy');
+
         // Set proxies and proxie-prefix
-        $configuredDriver->setProxyNamespace($this->configuration->get('proxy.namespace'));
-        $configuredDriver->setAutoGenerateProxyClasses($this->configuration->get('proxy.generate'));
+        $configuredDriver->setProxyNamespace($proxyConfiguration['namespace']);
+        $configuredDriver->setAutoGenerateProxyClasses($proxyConfiguration['generate']);
 
         return $configuredDriver;
     }

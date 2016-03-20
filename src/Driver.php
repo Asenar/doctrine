@@ -2,6 +2,7 @@
 
 namespace Kohana\Doctrine;
 
+use Doctrine\Common\Cache\Cache as DoctrineCache;
 use Doctrine\ORM\Mapping\DefaultNamingStrategy;
 use Doctrine\ORM\Mapping\UnderscoreNamingStrategy;
 use Kohana\Doctrine\Driver\DriverInterface;
@@ -27,11 +28,11 @@ class Driver
     }
 
     /**
-     * @param Cache $cache
+     * @param DoctrineCache $cache
      * @return \Doctrine\ORM\Configuration
      * @throws IncorrectConfigurationException
      */
-    public function configureDriver(Cache $cache = null)
+    public function configureDriver(DoctrineCache $cache = null)
     {
         $mappingConfig = $this->configuration->get('mapping');
         $proxyConfig = $this->configuration->get('proxy');
