@@ -29,11 +29,11 @@ class Configurator
      */
     private $driverChain;
 
-    public function __construct()
+    public function __construct(Configuration $configuration)
     {
-        $this->configuration = new Configuration;
-        $this->cache = new Cache($this->configuration);
-        $this->mapping = new Driver($this->configuration);
+        $this->configuration = $configuration;
+        $this->cache = new Cache($configuration);
+        $this->mapping = new Driver($configuration);
         $this->driverChain = new MappingDriverChain;
     }
 

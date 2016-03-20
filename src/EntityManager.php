@@ -28,8 +28,8 @@ class EntityManager
     public function __construct()
     {
         $this->configuration = new Configuration;
-        $this->configurator = new Configurator;
-        $this->eventManager = new EventManager;
+        $this->configurator = new Configurator($this->configuration);
+        $this->eventManager = new EventManager($this->configuration);
     }
 
     /**

@@ -17,9 +17,9 @@ class EventManager
      */
     private $eventManager;
 
-    public function __construct()
+    public function __construct(Configuration $configuration)
     {
-        $this->configuration = new Configuration;
+        $this->configuration = $configuration;
         $this->eventManager = new DoctrineEventManager;
     }
 
