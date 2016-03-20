@@ -16,5 +16,4 @@ class CacheNotInstalledException extends Exception
             $cacheName
         ));
     }
-
 }

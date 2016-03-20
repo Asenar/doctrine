@@ -17,6 +17,9 @@ class EventManager
      */
     private $eventManager;
 
+    /**
+     * @param Configuration $configuration
+     */
     public function __construct(Configuration $configuration)
     {
         $this->configuration = $configuration;
@@ -40,4 +43,4 @@ class EventManager
 
         return $this->eventManager;
     }
-} 
+}

@@ -16,5 +16,4 @@ class IncorrectConfigurationException extends Exception
             $field
         ));
     }
-
 }
